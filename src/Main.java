@@ -28,6 +28,7 @@ public class Main {
         obj.set(new JSONString("val"), new JSONValue(123));
         obj.set(new JSONString("c"), obj2);
         obj.set(new JSONString("list"), new JSONArray(new JSONArray(new JSONValue(1),new JSONValue(2)),new JSONArray(new JSONValue(3))));
+        obj.set(new JSONString("arr"), new JSONArray(new JSONValue(1),new JSONValue(2)));
         Mapper.serialize(obj, c);
         System.out.println(c);
     }

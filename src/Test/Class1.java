@@ -11,13 +11,14 @@ public class Class1 {
     public int val;
     public Class2 c;
     public List<List<Integer>> list;
+    public int[] arr;
 
     public Class1() {
     }
 
     @Override
     public String toString() {
-        return String.format("[%s\t%s\t%s\t%s]", str1, val, c, list.toString());
+        return String.format("[%s\t%s\t%s\t%s\t%s]", str1, val, c, list.toString(),Arrays.toString(arr));
     }
 }
 

@@ -2,10 +2,7 @@ package JSONParser;
 
 import JSONParser.JSONValues.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +42,14 @@ public class Mapper {
                 }
                 return resList;
             } else if (type.isArray()) {
-                throw new UnsupportedOperationException("Arrays not supported yet use lists");
+                List<JSONElement> list = ((JSONArray) jsonElement).getList();
+//                System.out.println();
+                Object arr = Array.newInstance(type.componentType(),list.size());
+                for (int i = 0; i < list.size(); i++) {
+                    Array.set(arr,i,1);
+                }
+                return arr;
+//                throw new UnsupportedOperationException("Arrays not supported yet use lists");
             } else {
                 //Probably an Object
                 Object child = type.getConstructor().newInstance();
