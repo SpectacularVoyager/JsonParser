@@ -2,8 +2,6 @@ import JSONParser.JSONValues.*;
 import JSONParser.Mapper;
 import Test.Class1;
 
-import java.util.ArrayList;
-
 public class Main {
     public static void main(String[] args) throws IllegalAccessException {
 //        System.out.println("Hello world!");
@@ -29,7 +27,10 @@ public class Main {
         obj.set(new JSONString("c"), obj2);
         obj.set(new JSONString("list"), new JSONArray(new JSONArray(new JSONValue(1),new JSONValue(2)),new JSONArray(new JSONValue(3))));
         obj.set(new JSONString("arr"), new JSONArray(new JSONValue(1),new JSONValue(2)));
-        Mapper.serialize(obj, c);
+        Mapper mapper=new Mapper();
+        mapper.deserialize(obj, c);
+        System.out.println(mapper.serialize(c).serialize());
+        System.out.println(obj.serialize());
         System.out.println(c);
     }
 }
