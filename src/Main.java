@@ -9,7 +9,6 @@ public class Main {
         Mapper<Class1> mapper = new Mapper<Class1>(new DefaultSerializer<Class1>());
         JSONObject object = (JSONObject) Parser.parse("{\"a\":1,\"arr\":[1,2,3],\"obj\":{\"a\":5}}");
         Class1 c1 = (Class1) mapper.deserialize(object, Class1.class);
-//        c1.obj.a="123";
         System.out.println(mapper.serialize(c1).serialize());
     }
 }
