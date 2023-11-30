@@ -55,7 +55,7 @@ public class SerializerUtils {
         }
     }
 
-    private static Object instantiate(Class<?> clazz) {
+    public static Object instantiate(Class<?> clazz) {
         try {
             Constructor constructor = clazz.getConstructor();
             constructor.setAccessible(true);
