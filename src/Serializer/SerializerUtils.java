@@ -7,21 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SerializerUtils {
-    public void deserialize(JSONObject jsonObject, Object object) {
+    public static void deserialize(JSONObject jsonObject, Object object) {
         Class<?> c = object.getClass();
         for (Field f : c.getFields()) {
             setField(f, object, jsonObject.get(f.getName()));
         }
     }
 
-    public Object deserialize(JSONObject jsonObject, Class<?> clazz) {
+    public static Object deserialize(JSONObject jsonObject, Class<?> clazz) {
         Object o = instantiate(clazz);
         deserialize(jsonObject, o);
         return o;
     }
 
 
-    public JSONObject serialize(Object object) throws IllegalAccessException {
+    public static JSONObject serialize(Object object) throws IllegalAccessException {
         Class<?> c = object.getClass();
         JSONObject jsonObject = new JSONObject();
         for (Field f : c.getFields()) {
@@ -30,7 +30,7 @@ public class SerializerUtils {
         return jsonObject;
     }
 
-    private JSONElement serializeField(Object object) throws IllegalAccessException {
+    public static JSONElement serializeField(Object object) throws IllegalAccessException {
         Class<?> type = object.getClass();
         if (object instanceof CharSequence) {
             return new JSONString(String.valueOf(object));
@@ -55,7 +55,7 @@ public class SerializerUtils {
         }
     }
 
-    private Object instantiate(Class<?> clazz) {
+    private static Object instantiate(Class<?> clazz) {
         try {
             Constructor constructor = clazz.getConstructor();
             constructor.setAccessible(true);
@@ -71,7 +71,7 @@ public class SerializerUtils {
     }
 
 
-    private void setField(Field field, Object object, JSONElement jsonElement) {
+    public static void setField(Field field, Object object, JSONElement jsonElement) {
         field.setAccessible(true);
         try {
             field.set(object, getField(field.getType(), jsonElement, (field.getGenericType())));
@@ -80,7 +80,7 @@ public class SerializerUtils {
         }
     }
 
-    private Object getField(Class<?> type, JSONElement jsonElement, Type parameterizedType) {
+    private static Object getField(Class<?> type, JSONElement jsonElement, Type parameterizedType) {
         try {
             if (String.class.isAssignableFrom(type)) {
                 return jsonElement.getValue();

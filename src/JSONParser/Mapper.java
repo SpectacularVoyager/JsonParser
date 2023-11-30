@@ -6,15 +6,20 @@ import Serializer.Serializer;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import Serializer.*;
 public class Mapper {
-    Serializer serializer;
+    Serializer<?> serializer;
 
-    public void deserialize(JSONObject jsonObject, Object object) {
+    public Mapper(Serializer<?> serializer) {
+        this.serializer = serializer;
+    }
+
+    private void deserialize(JSONObject jsonObject, Object object) {
         Class<?> c = object.getClass();
         for (Field f : c.getFields()) {
             setField(f, object, jsonObject.get(f.getName()));
         }
+//        serializer.deserialize(c.getFields(),jsonObject);
     }
 
     public Object deserialize(JSONObject jsonObject, Class<?> clazz) {
