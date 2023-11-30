@@ -3,9 +3,6 @@ package JSONParser;
 import JSONParser.JSONValues.*;
 import Serializer.Serializer;
 
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import Serializer.*;
 
