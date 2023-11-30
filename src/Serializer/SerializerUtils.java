@@ -1,15 +1,12 @@
-package JSONParser;
+package Serializer;
 
 import JSONParser.JSONValues.*;
-import Serializer.Serializer;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mapper {
-    Serializer serializer;
-
+public class SerializerUtils {
     public void deserialize(JSONObject jsonObject, Object object) {
         Class<?> c = object.getClass();
         for (Field f : c.getFields()) {
@@ -58,7 +55,7 @@ public class Mapper {
         }
     }
 
-    public Object instantiate(Class<?> clazz) {
+    private Object instantiate(Class<?> clazz) {
         try {
             Constructor constructor = clazz.getConstructor();
             constructor.setAccessible(true);
@@ -153,7 +150,7 @@ public class Mapper {
         return clazz;
     }
 
-    public static Object getNumericFromString(Object value, Class<?> type) throws InvocationTargetException {
+    private static Object getNumericFromString(Object value, Class<?> type) throws InvocationTargetException {
 
         if (type.isPrimitive()) {
             type = toWrapper(type);
