@@ -24,7 +24,7 @@ public class Parser {
             Object[] object = getValue(s, i);
             JSONElement value = parse((String) object[0]);
             elements.add(value);
-            i += (int) object[1];
+            i = (int) object[1];
         }
         return new JSONArray(elements);
     }
@@ -50,23 +50,25 @@ public class Parser {
             }
             int valueStart = ++i;
             char x = s.charAt(valueStart);
-            String value;
-            if (x == '{') {
-                value = (matchTill(s, "}", i, true));
-                i++;
-            } else if (x == '[') {
-//                value = (matchTill(s, "]", i, true));
-                value = matchBracket(s, i, '[', ']');
-                i++;
-            } else if (x == '"') {
-                value = (matchTill(s, "\"", i, true));
-                i++;
-            } else {
-                value = (matchTill(s, ",}]\0", i, false));
-                i++;
-            }
+            Object[] o = getValue(s, i);
+            String value = (String) o[0];
+//            if (x == '{') {
+//                value = (matchTill(s, "}", i, true));
+//                i++;
+//            } else if (x == '[') {
+////                value = (matchTill(s, "]", i, true));
+//                value = matchBracket(s, i, '[', ']');
+//                i++;
+//            } else if (x == '"') {
+//                value = (matchTill(s, "\"", i, true));
+//                i++;
+//            } else {
+//                value = (matchTill(s, ",}]\0", i, false));
+//                i++;
+//            }
+
             object.set(key, parse(value));
-            i += value.length();
+            i = (int) o[1];
         }
         return object;
     }
@@ -75,14 +77,13 @@ public class Parser {
         char x = s.charAt(i);
         String value;
         if (x == '{') {
-            value = (matchTill(s, "}", i, true));
+            value = matchBracket(s, i, '{', '}');
             i++;
         } else if (x == '[') {
-//                value = (matchTill(s, "]", i, true));
             value = matchBracket(s, i, '[', ']');
             i++;
         } else if (x == '"') {
-            value = (matchTill(s, "\"", i, true));
+            value = "\"" + (matchTill(s, "\"", i + 1, true));
             i++;
         } else {
             value = (matchTill(s, ",}]\0", i, false));
@@ -142,7 +143,6 @@ public class Parser {
     }
 
     public static JSONElement parse(String s) {
-
         char x = s.charAt(0);
         if (x == '{') {
             return parseObject(s);

@@ -1,13 +1,11 @@
 package Test;
 
+import java.util.List;
+
 public class Class2 {
-    public int a;
+    public List<Class3> arr;
 
     public Class2() {
     }
 
-    @Override
-    public String toString() {
-        return String.valueOf(a);
-    }
 }

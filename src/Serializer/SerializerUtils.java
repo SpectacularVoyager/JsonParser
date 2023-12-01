@@ -81,7 +81,6 @@ public class SerializerUtils {
     }
 
     private static Object getField(Class<?> type, JSONElement jsonElement, Type parameterizedType) {
-//        ParameterizedType genericParameterizedType
         try {
             if (String.class.isAssignableFrom(type)) {
                 return jsonElement.getValue();

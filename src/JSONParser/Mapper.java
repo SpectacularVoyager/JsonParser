@@ -15,7 +15,7 @@ public class Mapper<T> {
 
     private void deserialize(JSONObject jsonObject, T object) {
         Class<?> c = object.getClass();
-        serializer.deserialize(c.getFields(), jsonObject, object);
+        serializer.deserialize(jsonObject, object);
     }
 
     public Object deserialize(JSONObject jsonObject, Class<?> clazz) {
@@ -27,7 +27,7 @@ public class Mapper<T> {
     public JSONObject serialize(T object) throws IllegalAccessException {
         Class<?> c = object.getClass();
         JSONObject jsonObject = new JSONObject();
-        serializer.serialize(c.getFields(), object, jsonObject);
+        serializer.serialize(object, jsonObject);
         return jsonObject;
     }
 }
