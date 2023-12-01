@@ -1,4 +1,4 @@
-package Serializer;
+package ParserCombinators.Serializer;
 
 import JSONParser.JSONValues.*;
 

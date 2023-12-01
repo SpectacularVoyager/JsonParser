@@ -1,8 +1,8 @@
 import JSONParser.JSONValues.*;
 import JSONParser.Mapper;
-import JSONParser.Parser.Tokens.Parser.Parser;
+import JSONParser.Parser.Parser;
 import ParserCombinators.CombinatorList;
-import Serializer.ReflectiveSerializer;
+import ParserCombinators.Serializer.ReflectiveSerializer;
 import Test.Class1;
 
 

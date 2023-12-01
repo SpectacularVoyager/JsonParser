@@ -1,11 +1,9 @@
-package JSONParser.Parser.Tokens.Parser;
+package JSONParser.Parser;
 
 import JSONParser.JSONValues.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Parser {
     public static JSONString parseString(String s) {
