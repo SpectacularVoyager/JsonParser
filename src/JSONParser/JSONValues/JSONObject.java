@@ -54,6 +54,11 @@ public class JSONObject implements JSONElement {
     }
 
     @Override
+    public String toString() {
+        return serialize();
+    }
+
+    @Override
     public Object getValue() {
         throw new UnsupportedOperationException();
     }

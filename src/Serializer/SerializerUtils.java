@@ -81,6 +81,7 @@ public class SerializerUtils {
     }
 
     private static Object getField(Class<?> type, JSONElement jsonElement, Type parameterizedType) {
+//        ParameterizedType genericParameterizedType
         try {
             if (String.class.isAssignableFrom(type)) {
                 return jsonElement.getValue();
@@ -89,10 +90,11 @@ public class SerializerUtils {
             } else if (Number.class.isAssignableFrom(type) || type.isPrimitive()) {
                 return getNumericFromString(jsonElement.getValue(), type);
             } else if (List.class.isAssignableFrom(type)) {
+                Type __myType = (((ParameterizedType) parameterizedType).getActualTypeArguments()[0]);
+
                 List<JSONElement> list = ((JSONArray) jsonElement).getList();
                 List<Object> resList = new ArrayList<>();
                 for (JSONElement o : list) {
-                    Type __myType = (((ParameterizedType) parameterizedType).getActualTypeArguments()[0]);
                     if (__myType instanceof ParameterizedType) {
                         //IF LIST<GENERIC> FOUND
                         resList.add(getField(type, o, __myType));
@@ -100,7 +102,6 @@ public class SerializerUtils {
                         //IF GENERIC FOUND
                         resList.add(getField((Class<?>) __myType, o, __myType));
                     }
-
                 }
                 return resList;
             } else if (type.isArray()) {
@@ -123,6 +124,7 @@ public class SerializerUtils {
         }
         throw new RuntimeException("CAUGHT EXCEPTIONS");
     }
+
 
     private static Class<?> toWrapper(Class<?> clazz) {
         if (!clazz.isPrimitive())

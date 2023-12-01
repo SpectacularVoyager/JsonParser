@@ -17,10 +17,14 @@ public class Parser {
     }
 
     public static JSONArray parseArray(String s) {
-        String str = s.substring(1, s.length() - 1);
+        s = s.substring(1, s.length() - 1);
         List<JSONElement> elements = new ArrayList<>();
-        for (String x : str.split(",")) {
-            elements.add(parse(x));
+        int i = 0;
+        while (i < s.length()) {
+            Object[] object = getValue(s, i);
+            JSONElement value = parse((String) object[0]);
+            elements.add(value);
+            i += (int) object[1];
         }
         return new JSONArray(elements);
     }
@@ -48,16 +52,17 @@ public class Parser {
             char x = s.charAt(valueStart);
             String value;
             if (x == '{') {
-                value = (matchTill(s, "}", i,true));
-
+                value = (matchTill(s, "}", i, true));
+                i++;
             } else if (x == '[') {
-                value = (matchTill(s, "]", i,true));
+//                value = (matchTill(s, "]", i, true));
+                value = matchBracket(s, i, '[', ']');
                 i++;
             } else if (x == '"') {
-                value = (matchTill(s, "\"", i,true));
+                value = (matchTill(s, "\"", i, true));
                 i++;
             } else {
-                value = (matchTill(s, ",}]\0", i,false));
+                value = (matchTill(s, ",}]\0", i, false));
                 i++;
             }
             object.set(key, parse(value));
@@ -65,6 +70,28 @@ public class Parser {
         }
         return object;
     }
+
+    public static Object[] getValue(String s, int i) {
+        char x = s.charAt(i);
+        String value;
+        if (x == '{') {
+            value = (matchTill(s, "}", i, true));
+            i++;
+        } else if (x == '[') {
+//                value = (matchTill(s, "]", i, true));
+            value = matchBracket(s, i, '[', ']');
+            i++;
+        } else if (x == '"') {
+            value = (matchTill(s, "\"", i, true));
+            i++;
+        } else {
+            value = (matchTill(s, ",}]\0", i, false));
+            i++;
+        }
+        i += value.length();
+        return new Object[]{value, i};
+    }
+
 
     public static String matchTill(String s, String x, int start, boolean includeDelim) {
         int i = start;
@@ -92,6 +119,26 @@ public class Parser {
             }
         }
         return false;
+    }
+
+    private static String matchBracket(String s, int i, char l_brace, char r_brace) {
+//        i++;
+        int start = i;
+        int a = 0;
+        while (a > 0 || start == i) {
+            if (i >= s.length()) {
+                throw new RuntimeException(String.format("Expected %c got end of String", r_brace));
+            }
+            char x = s.charAt(i);
+            if (x == l_brace) {
+                a++;
+            }
+            if (x == r_brace) {
+                a--;
+            }
+            i++;
+        }
+        return s.substring(start, i);
     }
 
     public static JSONElement parse(String s) {

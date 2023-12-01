@@ -7,3 +7,4 @@
 1. Add support for multidimensional arrays
 2. Check for non-public variables
 3. Add caching for JSONArray and JSONObject
+4. Fix list commas

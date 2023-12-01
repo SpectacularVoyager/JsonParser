@@ -32,7 +32,7 @@ public class JSONArray implements JSONElement {
             sb.setCharAt(sb.length() - 1, ']');
             return sb.toString();
         }
-        return "]";
+        return "[]";
     }
 
     @Override
