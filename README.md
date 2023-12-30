@@ -5,8 +5,7 @@
 
 ## TODO
 1. Add support for multidimensional arrays
-2. Rewrite serializer for better support of Generics
-3. Check for non-public variables
-4. Add caching for JSONArray and JSONObject
-5. Add support for private fields
-6. Add component based combinators
+2. Add support for Multiple generics in classes
+3. Add caching for JSONArray and JSONObject
+4. Add support for private fields
+5. Add component based combinators
