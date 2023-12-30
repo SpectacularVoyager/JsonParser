@@ -79,6 +79,10 @@ public class SerializerUtils {
         Class<?> type = field.getType();
 
         Object o = field.getGenericType();
+        /**
+         * NEED TO REMOVE
+         * REPLACE WITH BETTER GENERIC SUPPORT
+         */
         if (o instanceof TypeVariable<?>) {
             if (generics != null) {
                 type = generics;

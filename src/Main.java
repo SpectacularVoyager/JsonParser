@@ -19,8 +19,8 @@ public class Main {
 //        Class1 c1 = (Class1) mapper.deserialize(object, Class1.class);
 //        System.out.println(mapper.serialize(c1).serialize());
 //        test();
-        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[12,13,14],[1,2]],\"c3\":{\"b\":10}}");
-//        JSONObject object = (JSONObject) Parser.parse("{\"c3\":{\"b\":10}}");
+//        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[12,13,14],[1,2]],\"c3\":{\"b\":10}}");
+        JSONObject object = (JSONObject) Parser.parse("{\"c3\":{\"b\":10}}");
         Mapper<Class1<Integer>> mapper=new Mapper<>(new ReflectiveSerializer<>(Class1.class,Integer.class));
         Class1<Integer> obj=mapper.deserialize(object,Class1.class);
 
