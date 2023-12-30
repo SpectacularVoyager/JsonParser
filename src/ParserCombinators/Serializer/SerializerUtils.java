@@ -1,24 +1,13 @@
 package ParserCombinators.Serializer;
 
 import JSONParser.JSONValues.*;
+import JSONParser.Mapper;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SerializerUtils {
-    public static void deserialize(JSONObject jsonObject, Object object) {
-        Class<?> c = object.getClass();
-        for (Field f : c.getFields()) {
-            setField(f, object, jsonObject.get(f.getName()));
-        }
-    }
-
-    public static Object deserialize(JSONObject jsonObject, Class<?> clazz) {
-        Object o = instantiate(clazz);
-        deserialize(jsonObject, o);
-        return o;
-    }
 
 
     public static JSONObject serialize(Object object) throws IllegalAccessException {
@@ -70,16 +59,156 @@ public class SerializerUtils {
 
     }
 
+    public static void deserializeField(Field field, Object object, JSONElement element) {
+        deserializeField(field, object, element, field.getType());
+    }
+
+    public static void deserializeField(Field field, Object object, JSONElement element, Class<?> generic) {
+        field.setAccessible(true);
+        try {
+            field.set(object, getDeserializeField(field, element, generic));
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    //need type for generics
+    public static Object getDeserializeField(Field field, JSONElement element, Class<?> generics) {
+
+        Class<?> type = field.getType();
+
+        Object o = field.getGenericType();
+        if (o instanceof TypeVariable<?>) {
+            if (generics != null) {
+                type = generics;
+            }
+        }
+        try {
+            if (CharSequence.class.isAssignableFrom(type)) {
+                if (String.class.isAssignableFrom(type)) {
+                    return element.getValue();
+                } else {
+                    return type.getConstructor(CharSequence.class).newInstance((CharSequence) element.getValue());
+                }
+            } else if (Number.class.isAssignableFrom(type) || type.isPrimitive()) {
+                return getNumericFromString(element.getValue(), type);
+            } else if (List.class.isAssignableFrom(type)) {
+                Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
+                List<JSONElement> list = ((JSONArray) element).getList();
+                List<Object> resList = new ArrayList<>();
+                for (JSONElement e : list) {
+                    if (__myType instanceof ParameterizedType) {
+                        //IF LIST<GENERIC> FOUND
+                        resList.add(getDeserializeField(type, e, (ParameterizedType) __myType));
+                    } else {
+//                        //IF GENERIC FOUND
+                        resList.add(getDeserializeField((Class<?>) __myType, e, null));
+                    }
+                }
+                return resList;
+//                throw new UnsupportedOperationException();
+            } else if (type.isArray()) {
+                List<JSONElement> list = ((JSONArray) element).getList();
+                Object arr = Array.newInstance(type.componentType(), list.size());
+                for (int i = 0; i < list.size(); i++) {
+                    Array.set(arr, i, getDeserializeField(type.componentType(), list.get(i), null));
+                }
+                return arr;
+            } else {
+                if (o instanceof ParameterizedType) {
+
+                    Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
+                    if (__myType instanceof ParameterizedType) {
+                        return getDeserializeField(type, element, (ParameterizedType) __myType);
+                    } else if (__myType instanceof TypeVariable<?>) {
+//                        System.out.println("OH KURWA");
+                        TypeVariable<?> var=(TypeVariable<?>) __myType;
+                        System.out.println(var);
+                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(),generics)).deserialize((JSONObject) element, field.getType());
+                    } else {
+                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(), (Class<?>) __myType)).deserialize((JSONObject) element, type);
+
+                    }
+                }
+                return new Mapper<>(new ReflectiveSerializer<>(field.getType())).deserialize((JSONObject) element, field.getType());
+            }
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getDeserializeField(Class<?> type, JSONElement element, ParameterizedType generics) {
+        try {
+            if (CharSequence.class.isAssignableFrom(type)) {
+                if (String.class.isAssignableFrom(type)) {
+                    return element.getValue();
+                } else {
+                    return type.getConstructor(CharSequence.class).newInstance((CharSequence) element.getValue());
+                }
+            } else if (Number.class.isAssignableFrom(type) || type.isPrimitive()) {
+                return getNumericFromString(element.getValue(), type);
+            } else if (List.class.isAssignableFrom(type)) {
+                Type __myType = generics.getActualTypeArguments()[0];
+                List<JSONElement> list = ((JSONArray) element).getList();
+                List<Object> resList = new ArrayList<>();
+                for (JSONElement e : list) {
+                    if (__myType instanceof ParameterizedType) {
+                        //IF LIST<GENERIC> FOUND
+                        resList.add(getDeserializeField(type, e, (ParameterizedType) __myType));
+
+                    } else {
+//                        //IF GENERIC FOUND
+                        resList.add(getDeserializeField((Class<?>) __myType, e, null));
+                    }
+                }
+                return resList;
+//                throw new UnsupportedOperationException();
+            } else if (type.isArray()) {
+                List<JSONElement> list = ((JSONArray) element).getList();
+                Object arr = Array.newInstance(type.componentType(), list.size());
+                for (int i = 0; i < list.size(); i++) {
+                    Array.set(arr, i, getField(type.componentType(), list.get(i), null));
+                }
+                return arr;
+            } else {
+//                if (o instanceof ParameterizedType) {
+//
+//                    Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
+//                    if (__myType instanceof ParameterizedType) {
+//                        return getDeserializeField(type, element, (ParameterizedType) __myType);
+//                    } else if (__myType instanceof TypeVariable<?>) {
+//                        System.out.println("OH KURWA");
+//                        return new Mapper<>(new ReflectiveSerializer<>(type,generics)).deserialize((JSONObject) element, type);
+//                    } else {
+////                        return getDeserializeField(field, element, (Class<?>) __myType);
+//                        return new Mapper<>(new ReflectiveSerializer<>(type, (Class<?>) __myType)).deserialize((JSONObject) element, type);
+//
+//                    }
+//                }
+                throw new UnsupportedOperationException("HOW DID WE GET HERE");
+//                System.out.println("PLS FIX");
+//                return new Mapper<>(new ReflectiveSerializer<>(type)).deserialize((JSONObject) element, type);
+
+            }
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static void setField(Field field, Object object, JSONElement jsonElement) {
         field.setAccessible(true);
         try {
             field.set(object, getField(field.getType(), jsonElement, (field.getGenericType())));
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(String.format("Cannot acces %s.%s()", object.getClass().getName(), field.getName()));
+            throw new RuntimeException(String.format("Cannot access %s.%s()", object.getClass().getName(), field.getName()));
         }
     }
 
+    @Deprecated
     private static Object getField(Class<?> type, JSONElement jsonElement, Type parameterizedType) {
         try {
             if (String.class.isAssignableFrom(type)) {
@@ -111,10 +240,11 @@ public class SerializerUtils {
                 }
                 return arr;
             } else {
+                throw new UnsupportedOperationException();
                 //Probably an Object
-                Object child = instantiate(type);
-                deserialize((JSONObject) jsonElement, child);
-                return child;
+//                Object child = instantiate(type);
+//                deserialize((JSONObject) jsonElement, child);
+//                return child;
             }
         } catch (InvocationTargetException e) {
             throw new RuntimeException("Invocation exception", e.getCause());

@@ -17,6 +17,11 @@ public class JSONString implements JSONElement {
     public Object getValue() {
         return val;
     }
+    @Override
+    public String toString() {
+        return serialize();
+    }
+
 
     @Override
     public boolean equals(Object o) {

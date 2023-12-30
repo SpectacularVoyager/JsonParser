@@ -34,6 +34,11 @@ public class JSONArray implements JSONElement {
         }
         return "[]";
     }
+    @Override
+    public String toString() {
+        return serialize();
+    }
+
 
     @Override
     public Object getValue() {

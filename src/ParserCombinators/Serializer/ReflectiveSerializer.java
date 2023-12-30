@@ -7,10 +7,18 @@ import java.lang.reflect.Field;
 
 public class ReflectiveSerializer<T> implements Serializer<T> {
 
-    private Class<?> clazz;
+    private final Class<?> clazz;
+    private Class<?> generics = null;
 
+    //ENSURE CLASS IS NOT GENERIC
     public ReflectiveSerializer(Class<?> clazz) {
         this.clazz = clazz;
+    }
+
+    //FOR GENERIC CLASSES
+    public ReflectiveSerializer(Class<?> clazz, Class<?> generics) {
+        this(clazz);
+        this.generics = generics;
     }
 
     public Field[] getFields() {
@@ -20,9 +28,13 @@ public class ReflectiveSerializer<T> implements Serializer<T> {
     @Override
     public void deserialize(JSONObject jsonObject, Object object) {
         for (Field f : getFields()) {
-            SerializerUtils.setField(f, object, jsonObject.get(f.getName()));
+            if (generics == null)
+                SerializerUtils.deserializeField(f, object, jsonObject.get(f.getName()));
+            else
+                SerializerUtils.deserializeField(f, object, jsonObject.get(f.getName()),generics);
         }
     }
+
 
     @Override
     public void serialize(Object o, JSONObject jsonObject) throws IllegalAccessException {

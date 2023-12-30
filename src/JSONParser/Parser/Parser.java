@@ -50,21 +50,6 @@ public class Parser {
             char x = s.charAt(valueStart);
             Object[] o = getValue(s, i);
             String value = (String) o[0];
-//            if (x == '{') {
-//                value = (matchTill(s, "}", i, true));
-//                i++;
-//            } else if (x == '[') {
-////                value = (matchTill(s, "]", i, true));
-//                value = matchBracket(s, i, '[', ']');
-//                i++;
-//            } else if (x == '"') {
-//                value = (matchTill(s, "\"", i, true));
-//                i++;
-//            } else {
-//                value = (matchTill(s, ",}]\0", i, false));
-//                i++;
-//            }
-
             object.set(key, parse(value));
             i = (int) o[1];
         }

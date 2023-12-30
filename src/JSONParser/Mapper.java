@@ -13,14 +13,14 @@ public class Mapper<T> {
         this.serializer = serializer;
     }
 
-    private void deserialize(JSONObject jsonObject, T object) {
+    private void deserialize(JSONObject jsonObject, T object, Class<?> generic) {
         Class<?> c = object.getClass();
         serializer.deserialize(jsonObject, object);
     }
 
-    public Object deserialize(JSONObject jsonObject, Class<?> clazz) {
-        T o = (T)SerializerUtils.instantiate(clazz);
-        deserialize(jsonObject, o);
+    public T deserialize(JSONObject jsonObject, Class<?> clazz) {
+        T o = (T) SerializerUtils.instantiate(clazz);
+        serializer.deserialize(jsonObject, o);
         return o;
     }
 

@@ -18,6 +18,10 @@ public class JSONValue implements JSONElement {
         return val;
     }
 
+    @Override
+    public String toString() {
+        return serialize();
+    }
 
     @Override
     public boolean equals(Object o) {
