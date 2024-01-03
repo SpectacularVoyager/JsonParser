@@ -13,7 +13,7 @@
     //Create a generics object with for Class1<Integer>
     ParameterizedGenerics generics=new ParameterizedGenerics(Class2.class);
 
-    //Create a serializer,Here we create a reflectionSerializer.We can also use a Custom Serializer
+    //Create a serializer,Here we create a Reflection based Serializer.We can also use a Custom Serializer
     Serializer<Class2> serializer=new ReflectiveSerializer<>(Class2.class,generics);
 
     //Create a mapper
