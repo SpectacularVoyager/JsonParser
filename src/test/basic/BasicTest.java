@@ -6,7 +6,7 @@ import main.JSONParser.Mapper;
 import main.JSONParser.ParameterizedGenerics;
 import main.JSONParser.Parser.Parser;
 import main.ParserCombinators.Serializer.ReflectiveSerializer;
-import test.basic.Test.Test1;
+import test.Test.Test1;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

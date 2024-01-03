@@ -1,4 +1,4 @@
-package test.basic.Test;
+package test.Test;
 
 public class Class3 <K,T>{
 

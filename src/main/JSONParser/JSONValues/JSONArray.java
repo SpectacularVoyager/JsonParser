@@ -4,6 +4,7 @@ import java.util.*;
 
 //TODO: Implement caching for serialize
 public class JSONArray implements JSONElement {
+
     private final List<JSONElement> list;
 
     public JSONArray(List<JSONElement> list) {

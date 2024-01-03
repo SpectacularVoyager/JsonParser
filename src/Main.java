@@ -4,8 +4,7 @@ import main.JSONParser.ParameterizedGenerics;
 import main.JSONParser.Parser.Parser;
 import main.ParserCombinators.CombinatorList;
 import main.ParserCombinators.Serializer.ReflectiveSerializer;
-import test.basic.Test.Class1;
-import test.basic.Test.Test1;
+import test.Test.Class1;
 
 
 public class Main {

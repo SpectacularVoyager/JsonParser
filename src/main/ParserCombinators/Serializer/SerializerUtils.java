@@ -73,86 +73,7 @@ public class SerializerUtils {
         }
     }
 
-
     //need type for generics
-    public static Object getDeserializeField(Field field, JSONElement element, ParameterizedGenerics generics) {
-        Class<?> type = field.getType();
-        Object o = field.getGenericType();
-        return getDeserializeField(type, o, element, generics);
-    }
-
-    /**
-     * public static Object getDeserializeField(Field field, JSONElement element, ParameterizedGenerics generics) {
-     * Class<?> type = field.getType();
-     * Object o = field.getGenericType();
-     * if (o instanceof TypeVariable<?>) {
-     * if (generics != null) {
-     * TypeVariable<?> var = (TypeVariable<?>) o;
-     * type = generics.get(var.getName());
-     * }
-     * }
-     * try {
-     * if (CharSequence.class.isAssignableFrom(type)) {
-     * if (String.class.isAssignableFrom(type)) {
-     * return element.getValue();
-     * } else {
-     * return type.getConstructor(CharSequence.class).newInstance((CharSequence) element.getValue());
-     * }
-     * } else if (Number.class.isAssignableFrom(type) || type.isPrimitive()) {
-     * return getNumericFromString(element.getValue(), type);
-     * } else if (List.class.isAssignableFrom(type)) {
-     * Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
-     * List<JSONElement> list = ((JSONArray) element).getList();
-     * List<Object> resList = new ArrayList<>();
-     * for (JSONElement e : list) {
-     * if (__myType instanceof ParameterizedType) {
-     * //IF LIST<GENERIC> FOUND
-     * //                        resList.add(getArrayElement(type, e, generics));
-     * //                        resList.add(getDeserializeField(type,o, e, generics));
-     * resList.add(getDeserializeField((Class<?>) ((ParameterizedType)__myType).getRawType(),o, e, generics));
-     * <p>
-     * } else {
-     * //                        //IF GENERIC FOUND
-     * //                        resList.add(getArrayElement((Class<?>) __myType, e, null));
-     * resList.add(getDeserializeField((Class<?>) __myType,o, e, generics));
-     * }
-     * }
-     * return resList;
-     * //                throw new UnsupportedOperationException();
-     * } else if (type.isArray()) {
-     * List<JSONElement> list = ((JSONArray) element).getList();
-     * Object arr = Array.newInstance(type.componentType(), list.size());
-     * for (int i = 0; i < list.size(); i++) {
-     * //                    Array.set(arr, i, getArrayElement(type.componentType(), list.get(i), null));
-     * Array.set(arr, i, getDeserializeField(type.componentType(),o, list.get(i), null));
-     * }
-     * return arr;
-     * } else {
-     * if (o instanceof ParameterizedType) {
-     * <p>
-     * Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
-     * if (__myType instanceof TypeVariable<?>) {
-     * return new Mapper<>(new ReflectiveSerializer<>(type, new ParameterizedGenerics(field, (ParameterizedType) o, generics))).deserialize((JSONObject) element, field.getType());
-     * //                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(),generics)).deserialize((JSONObject) element, field.getType());
-     * } else if (__myType instanceof ParameterizedType) {
-     * throw new UnsupportedOperationException("HOW");
-     * //                        return getDeserializeField(type, element, (ParameterizedType) __myType);
-     * } else {
-     * System.out.println(o);
-     * throw new UnsupportedOperationException("KURWA MAC");
-     * <p>
-     * //                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(), (Class<?>) __myType)).deserialize((JSONObject) element, type);
-     * <p>
-     * }
-     * }
-     * return new Mapper<>(new ReflectiveSerializer<>(type)).deserialize((JSONObject) element, type);
-     * }
-     * } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-     * InvocationTargetException e) {
-     * throw new RuntimeException(e);
-     * }
-     * }
-     */
 
     public static List<Object> getList(Class<?> type) {
         if (type.isInterface()) {
@@ -186,6 +107,12 @@ public class SerializerUtils {
         }
         throw new UnsupportedOperationException("SHOULD NOT HAVE HAPPENED\\2");
 
+    }
+
+    public static Object getDeserializeField(Field field, JSONElement element, ParameterizedGenerics generics) {
+        Class<?> type = field.getType();
+        Object o = field.getGenericType();
+        return getDeserializeField(type, o, element, generics);
     }
 
     public static Object getDeserializeField(Class<?> type, Object o, JSONElement element, ParameterizedGenerics generics) {

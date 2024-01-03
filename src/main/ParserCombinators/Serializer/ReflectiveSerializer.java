@@ -4,6 +4,7 @@ import main.JSONParser.JSONValues.JSONObject;
 import main.JSONParser.ParameterizedGenerics;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 
 public class ReflectiveSerializer<T> implements Serializer<T> {
@@ -14,11 +15,14 @@ public class ReflectiveSerializer<T> implements Serializer<T> {
     //ENSURE CLASS IS NOT GENERIC
     public ReflectiveSerializer(Class<?> clazz) {
         this.clazz = clazz;
+        if(clazz.getTypeParameters().length>0){
+            throw new IllegalArgumentException(String.format("Please provide ParameterizedGenerics for Generic class %s",clazz.getName()));
+        }
     }
 
     //FOR GENERIC CLASSES
     public ReflectiveSerializer(Class<?> clazz, ParameterizedGenerics generics) {
-        this(clazz);
+        this.clazz = clazz;
         this.generics = generics;
     }
 
