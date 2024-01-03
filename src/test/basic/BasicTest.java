@@ -6,6 +6,8 @@ import main.JSONParser.Mapper;
 import main.JSONParser.ParameterizedGenerics;
 import main.JSONParser.Parser.Parser;
 import main.ParserCombinators.Serializer.ReflectiveSerializer;
+import main.ParserCombinators.Serializer.Serializer;
+import test.Test.Class2;
 import test.Test.Test1;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,24 @@ public class BasicTest {
 
         object.set("x", new JSONValue(6));
         Assertions.assertEquals(object.serialize(), "{\"x\":6}");
+    }
+
+    @Test
+    public void example(){
+        //Create a generics object with for Class1<Integer>
+        ParameterizedGenerics generics=new ParameterizedGenerics(Class2.class);
+
+        //Create a serializer,Here we create a reflectionSerializer.We can also use a Custom Serializer
+        Serializer<Class2> serializer=new ReflectiveSerializer<>(Class2.class,generics);
+
+        //Create a mapper
+        Mapper<Class2> mapper=new Mapper<>(serializer);
+
+
+        JSONObject object=Parser.parseObject("{\"a\":10,\"b\":20}");
+        Class2 obj=mapper.deserialize(object, Class2.class);
+        Assertions.assertEquals(obj.a,10);
+
     }
 
     @Test
