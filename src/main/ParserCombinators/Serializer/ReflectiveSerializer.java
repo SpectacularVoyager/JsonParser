@@ -4,7 +4,6 @@ import main.JSONParser.JSONValues.JSONObject;
 import main.JSONParser.ParameterizedGenerics;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 
 public class ReflectiveSerializer<T> implements Serializer<T> {

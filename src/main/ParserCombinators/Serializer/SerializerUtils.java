@@ -67,7 +67,9 @@ public class SerializerUtils {
     public static void deserializeField(Field field, Object object, JSONElement element, ParameterizedGenerics generic) {
         field.setAccessible(true);
         try {
-            field.set(object, getDeserializeField(field, element, generic));
+            Object o=getDeserializeField(field, element, generic);
+//            System.out.println(o);
+            field.set(object,o );
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -357,7 +359,7 @@ public class SerializerUtils {
     }
 
 
-    private static Class<?> toWrapper(Class<?> clazz) {
+    public static Class<?> toWrapper(Class<?> clazz) {
         if (!clazz.isPrimitive())
             return clazz;
 
@@ -383,7 +385,7 @@ public class SerializerUtils {
         return clazz;
     }
 
-    private static Object getNumericFromString(Object value, Class<?> type) throws InvocationTargetException {
+    public static Object getNumericFromString(Object value, Class<?> type) throws InvocationTargetException {
 
         if (type.isPrimitive()) {
             type = toWrapper(type);
