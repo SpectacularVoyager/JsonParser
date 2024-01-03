@@ -1,6 +1,6 @@
-package JSONParser.FieldSerializer;
+package main.JSONParser.FieldSerializer;
 
-import JSONParser.JSONValues.JSONElement;
+import main.JSONParser.JSONValues.JSONElement;
 
 import java.lang.reflect.ParameterizedType;
 

@@ -1,6 +1,7 @@
-package ParserCombinators.Serializer;
+package main.ParserCombinators.Serializer;
 
-import JSONParser.JSONValues.JSONObject;
+import main.JSONParser.JSONValues.JSONObject;
+import main.JSONParser.ParameterizedGenerics;
 
 import java.lang.reflect.Field;
 
@@ -8,7 +9,7 @@ import java.lang.reflect.Field;
 public class ReflectiveSerializer<T> implements Serializer<T> {
 
     private final Class<?> clazz;
-    private Class<?> generics = null;
+    private ParameterizedGenerics generics = null;
 
     //ENSURE CLASS IS NOT GENERIC
     public ReflectiveSerializer(Class<?> clazz) {
@@ -16,7 +17,7 @@ public class ReflectiveSerializer<T> implements Serializer<T> {
     }
 
     //FOR GENERIC CLASSES
-    public ReflectiveSerializer(Class<?> clazz, Class<?> generics) {
+    public ReflectiveSerializer(Class<?> clazz, ParameterizedGenerics generics) {
         this(clazz);
         this.generics = generics;
     }

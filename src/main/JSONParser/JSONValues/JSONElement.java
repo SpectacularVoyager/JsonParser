@@ -1,4 +1,4 @@
-package JSONParser.JSONValues;
+package main.JSONParser.JSONValues;
 
 public interface JSONElement {
     public String serialize();

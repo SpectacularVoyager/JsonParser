@@ -1,6 +1,6 @@
-package ParserCombinators;
+package main.ParserCombinators;
 
-import JSONParser.JSONValues.JSONElement;
+import main.JSONParser.JSONValues.JSONElement;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

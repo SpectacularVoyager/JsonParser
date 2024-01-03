@@ -1,8 +1,8 @@
-package ParserCombinators;
+package main.ParserCombinators;
 
-import JSONParser.FieldSerializer.FieldDeserializer;
-import JSONParser.FieldSerializer.FieldSerializer;
-import JSONParser.JSONValues.JSONElement;
+import main.JSONParser.FieldSerializer.FieldDeserializer;
+import main.JSONParser.FieldSerializer.FieldSerializer;
+import main.JSONParser.JSONValues.JSONElement;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.function.Predicate;
