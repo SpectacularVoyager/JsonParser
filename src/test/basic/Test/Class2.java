@@ -1,6 +1,4 @@
-package main.Test;
-
-import java.util.List;
+package test.basic.Test;
 
 public class Class2{
     public int a;
