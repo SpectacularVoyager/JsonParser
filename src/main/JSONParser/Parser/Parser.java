@@ -1,6 +1,6 @@
-package JSONParser.Parser;
+package main.JSONParser.Parser;
 
-import JSONParser.JSONValues.*;
+import main.JSONParser.JSONValues.*;
 
 import java.util.ArrayList;
 import java.util.List;

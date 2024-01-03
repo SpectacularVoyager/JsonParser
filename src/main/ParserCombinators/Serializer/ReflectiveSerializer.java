@@ -1,7 +1,7 @@
-package ParserCombinators.Serializer;
+package main.ParserCombinators.Serializer;
 
-import JSONParser.JSONValues.JSONObject;
-import JSONParser.ParameterizedGenerics;
+import main.JSONParser.JSONValues.JSONObject;
+import main.JSONParser.ParameterizedGenerics;
 
 import java.lang.reflect.Field;
 

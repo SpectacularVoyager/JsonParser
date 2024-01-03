@@ -1,10 +1,11 @@
-import JSONParser.JSONValues.*;
-import JSONParser.Mapper;
-import JSONParser.ParameterizedGenerics;
-import JSONParser.Parser.Parser;
-import ParserCombinators.CombinatorList;
-import ParserCombinators.Serializer.ReflectiveSerializer;
-import Test.Class1;
+import main.JSONParser.JSONValues.*;
+import main.JSONParser.Mapper;
+import main.JSONParser.ParameterizedGenerics;
+import main.JSONParser.Parser.Parser;
+import main.ParserCombinators.CombinatorList;
+import main.ParserCombinators.Serializer.ReflectiveSerializer;
+import main.Test.Class1;
+import main.Test.Test1;
 
 
 public class Main {
@@ -16,7 +17,7 @@ public class Main {
 //        Class1 c1 = (Class1) mapper.deserialize(object, Class1.class);
 //        System.out.println(mapper.serialize(c1).serialize());
 //        test();
-        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[12,13,14],[1,2]],\"c3\":{\"b\":10,\"c\":30}}");
+        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[[12,13,14],[1,2]],[]],\"c3\":{\"b\":10,\"c\":30}}");
 
 
 //        JSONObject object = (JSONObject) Parser.parse("{\"c3\":{\"b\":10,\"c\":154},\"val\":15}");
@@ -26,9 +27,16 @@ public class Main {
         Class1<Integer> obj=mapper.deserialize(object,Class1.class);
 
 
-
         System.out.println(mapper.serialize(obj));
+        test2();
 
+    }
+    public static void test2() throws IllegalAccessException {
+        JSONObject object = (JSONObject) Parser.parse("{\"list\":[{\"x\":5}]}");
+        ParameterizedGenerics generics=new ParameterizedGenerics(Test1.class,Integer.class);
+        Mapper<Test1<Integer>> mapper=new Mapper<>(new ReflectiveSerializer<>(Test1.class,generics));
+        Test1<Integer> obj=mapper.deserialize(object,Test1.class);
+        System.out.println(mapper.serialize(obj));
     }
 
     public static void test() {

@@ -1,4 +1,4 @@
-package JSONParser;
+package main.JSONParser;
 
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
@@ -29,8 +29,9 @@ public class ParameterizedGenerics {
 
     public ParameterizedGenerics(Field f, ParameterizedType parameterizedType, ParameterizedGenerics generics) {
         this();
-        Type[] types = parameterizedType.getActualTypeArguments();
+        Type[] types = (((ParameterizedType) f.getGenericType()).getActualTypeArguments());
         Type t = ((ParameterizedType) f.getGenericType()).getRawType();
+//        System.out.println(((ParameterizedType) f.getGenericType()).getActualTypeArguments());
         TypeVariable<?>[] vars = ((Class<?>) t).getTypeParameters();
         for (int i = 0; i < vars.length; i++) {
             String key = vars[i].getName();
@@ -40,6 +41,21 @@ public class ParameterizedGenerics {
             }
             map.put(key, val);
 //            System.out.printf("%s:\t%s\n",key,val);
+        }
+    }
+    public ParameterizedGenerics(Object genericType, ParameterizedGenerics generics) {
+        this();
+        Type[] types = (((ParameterizedType) genericType).getActualTypeArguments());
+        Type t = ((ParameterizedType) genericType).getRawType();
+//        System.out.println(((ParameterizedType) f.getGenericType()).getActualTypeArguments());
+        TypeVariable<?>[] vars = ((Class<?>) t).getTypeParameters();
+        for (int i = 0; i < vars.length; i++) {
+            String key = vars[i].getName();
+            Class<?> val = generics.get(types[i].getTypeName());
+            if (val == null) {
+                val = (Class<?>) types[i];
+            }
+            map.put(key, val);
         }
     }
 

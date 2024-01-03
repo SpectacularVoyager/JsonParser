@@ -1,10 +1,10 @@
-package JSONParser;
+package main.JSONParser;
 
-import JSONParser.JSONValues.*;
-import ParserCombinators.Serializer.Serializer;
+import main.JSONParser.JSONValues.*;
+import main.ParserCombinators.Serializer.Serializer;
 
 
-import ParserCombinators.Serializer.*;
+import main.ParserCombinators.Serializer.*;
 
 public class Mapper<T> {
     Serializer<T> serializer;
