@@ -35,12 +35,16 @@
     //Print a (It should be 10)
     System.out.println(obj.a);
 ```
+> [!NOTE]
+> Make sure class variables are public and the class has a default empty constructor
+
 ### Features
 * Works with any class
 * Fully supports generic classes
 * Easy to change default behaviour using Custom Serializers
 
 ### Upcoming
+- [ ] Adding better Error handling
 - [ ] Support for Multi-dimensional Arrays
 - [ ] Support for finding private/protected fields
 - [ ] Caching JSONArray and JSONObjects
