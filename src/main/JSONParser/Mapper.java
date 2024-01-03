@@ -13,6 +13,16 @@ public class Mapper<T> {
         this.serializer = serializer;
     }
 
+    public Mapper(Class<?> c) {
+        ParameterizedGenerics generics = new ParameterizedGenerics(c);
+        this.serializer = new ReflectiveSerializer<>(c, generics);
+    }
+
+    public Mapper(Class<?> c, Class<?>... args) {
+        this.serializer = new ReflectiveSerializer<>(c, args);
+    }
+
+
     private void deserialize(JSONObject jsonObject, T object, Class<?> generic) {
         Class<?> c = object.getClass();
         serializer.deserialize(jsonObject, object);

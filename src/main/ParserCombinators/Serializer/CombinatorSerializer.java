@@ -17,6 +17,9 @@ public class CombinatorSerializer<T> implements Serializer<T> {
         this.list = list;
         list.setSerializer(this);
     }
+    public CombinatorSerializer(Class<?> clazz,CombinatorList<T> list,Class<?>[] args) {
+        this(clazz,new ParameterizedGenerics(clazz,args),list);
+    }
 
     public Field[] getFields() {
         return clazz.getFields();

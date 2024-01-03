@@ -18,6 +18,9 @@ public class ReflectiveSerializer<T> implements Serializer<T> {
             throw new IllegalArgumentException(String.format("Please provide ParameterizedGenerics for Generic class %s",clazz.getName()));
         }
     }
+    public ReflectiveSerializer(Class<?> clazz,Class<?>[] args) {
+        this(clazz,new ParameterizedGenerics(clazz,args));
+    }
 
     //FOR GENERIC CLASSES
     public ReflectiveSerializer(Class<?> clazz, ParameterizedGenerics generics) {

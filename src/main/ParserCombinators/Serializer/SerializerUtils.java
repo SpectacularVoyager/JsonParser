@@ -181,7 +181,7 @@ public class SerializerUtils {
                         throw new RuntimeException("SHOULD NOT HAPPEN IG");
 //                    System.out.println(o);
                 }
-                return new Mapper<>(new ReflectiveSerializer<>(type, null)).deserialize((JSONObject) element, type);
+                return new Mapper<>(new ReflectiveSerializer<>(type, generics)).deserialize((JSONObject) element, type);
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
