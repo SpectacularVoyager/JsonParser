@@ -1,13 +1,10 @@
 import JSONParser.JSONValues.*;
 import JSONParser.Mapper;
+import JSONParser.ParameterizedGenerics;
 import JSONParser.Parser.Parser;
 import ParserCombinators.CombinatorList;
 import ParserCombinators.Serializer.ReflectiveSerializer;
 import Test.Class1;
-import Test.Class3;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Main {
@@ -19,9 +16,13 @@ public class Main {
 //        Class1 c1 = (Class1) mapper.deserialize(object, Class1.class);
 //        System.out.println(mapper.serialize(c1).serialize());
 //        test();
-//        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[12,13,14],[1,2]],\"c3\":{\"b\":10}}");
-        JSONObject object = (JSONObject) Parser.parse("{\"c3\":{\"b\":10}}");
-        Mapper<Class1<Integer>> mapper=new Mapper<>(new ReflectiveSerializer<>(Class1.class,Integer.class));
+        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[12,13,14],[1,2]],\"c3\":{\"b\":10,\"c\":30}}");
+
+
+//        JSONObject object = (JSONObject) Parser.parse("{\"c3\":{\"b\":10,\"c\":154},\"val\":15}");
+
+        ParameterizedGenerics generics=new ParameterizedGenerics(Class1.class,Integer.class);
+        Mapper<Class1<Integer>> mapper=new Mapper<>(new ReflectiveSerializer<>(Class1.class,generics));
         Class1<Integer> obj=mapper.deserialize(object,Class1.class);
 
 

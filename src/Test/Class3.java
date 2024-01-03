@@ -1,8 +1,9 @@
 package Test;
 
-public class Class3 <T,K>{
+public class Class3 <K,T>{
 
     public T b;
+    public K c;
 
     public Class3() {
     }

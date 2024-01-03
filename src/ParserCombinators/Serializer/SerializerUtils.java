@@ -2,6 +2,7 @@ package ParserCombinators.Serializer;
 
 import JSONParser.JSONValues.*;
 import JSONParser.Mapper;
+import JSONParser.ParameterizedGenerics;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -60,10 +61,10 @@ public class SerializerUtils {
     }
 
     public static void deserializeField(Field field, Object object, JSONElement element) {
-        deserializeField(field, object, element, field.getType());
+        deserializeField(field, object, element, null);
     }
 
-    public static void deserializeField(Field field, Object object, JSONElement element, Class<?> generic) {
+    public static void deserializeField(Field field, Object object, JSONElement element, ParameterizedGenerics generic) {
         field.setAccessible(true);
         try {
             field.set(object, getDeserializeField(field, element, generic));
@@ -74,7 +75,7 @@ public class SerializerUtils {
 
 
     //need type for generics
-    public static Object getDeserializeField(Field field, JSONElement element, Class<?> generics) {
+    public static Object getDeserializeField(Field field, JSONElement element, ParameterizedGenerics generics) {
 
         Class<?> type = field.getType();
 
@@ -85,7 +86,9 @@ public class SerializerUtils {
          */
         if (o instanceof TypeVariable<?>) {
             if (generics != null) {
-                type = generics;
+                TypeVariable<?> var = (TypeVariable<?>) o;
+
+                type = generics.get(var.getName());
             }
         }
         try {
@@ -123,15 +126,16 @@ public class SerializerUtils {
                 if (o instanceof ParameterizedType) {
 
                     Type __myType = (((ParameterizedType) o).getActualTypeArguments()[0]);
-                    if (__myType instanceof ParameterizedType) {
-                        return getDeserializeField(type, element, (ParameterizedType) __myType);
-                    } else if (__myType instanceof TypeVariable<?>) {
-//                        System.out.println("OH KURWA");
-                        TypeVariable<?> var=(TypeVariable<?>) __myType;
-                        System.out.println(var);
-                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(),generics)).deserialize((JSONObject) element, field.getType());
+                    if (__myType instanceof TypeVariable<?>) {
+                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(), new ParameterizedGenerics(field, (ParameterizedType) o, generics))).deserialize((JSONObject) element, field.getType());
+//                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(),generics)).deserialize((JSONObject) element, field.getType());
+                    } else if (__myType instanceof ParameterizedType) {
+                        throw new UnsupportedOperationException("HOW");
+                        /** CAN UNCOMMENT */
+//                        return getDeserializeField(type, element, (ParameterizedType) __myType);
                     } else {
-                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(), (Class<?>) __myType)).deserialize((JSONObject) element, type);
+                        throw new UnsupportedOperationException("KURWA MAC");
+//                        return new Mapper<>(new ReflectiveSerializer<>(field.getType(), (Class<?>) __myType)).deserialize((JSONObject) element, type);
 
                     }
                 }
@@ -161,7 +165,6 @@ public class SerializerUtils {
                     if (__myType instanceof ParameterizedType) {
                         //IF LIST<GENERIC> FOUND
                         resList.add(getDeserializeField(type, e, (ParameterizedType) __myType));
-
                     } else {
 //                        //IF GENERIC FOUND
                         resList.add(getDeserializeField((Class<?>) __myType, e, null));
