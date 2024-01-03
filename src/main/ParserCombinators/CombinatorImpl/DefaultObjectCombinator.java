@@ -22,10 +22,10 @@ public class DefaultObjectCombinator<T> implements Combinator<T> {
             } else if (__myType instanceof ParameterizedType) {
                 return new Mapper<>(new ReflectiveSerializer<>(type, new ParameterizedGenerics(__myType, generics))).deserialize((JSONObject) element, type);
             } else {
-                return new Mapper<>(new ReflectiveSerializer<>(type, null)).deserialize((JSONObject) element, type);
+                return new Mapper<>(new ReflectiveSerializer<>(type, generics)).deserialize((JSONObject) element, type);
             }
         }
-        return new Mapper<>(new ReflectiveSerializer<>(type, null)).deserialize((JSONObject) element, type);
+        return new Mapper<>(new ReflectiveSerializer<>(type, generics)).deserialize((JSONObject) element, type);
     }
 
 

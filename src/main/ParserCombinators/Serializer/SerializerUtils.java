@@ -67,9 +67,9 @@ public class SerializerUtils {
     public static void deserializeField(Field field, Object object, JSONElement element, ParameterizedGenerics generic) {
         field.setAccessible(true);
         try {
-            Object o=getDeserializeField(field, element, generic);
+            Object o = getDeserializeField(field, element, generic);
 //            System.out.println(o);
-            field.set(object,o );
+            field.set(object, o);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -97,7 +97,12 @@ public class SerializerUtils {
                         if ((((Class<?>) ((ParameterizedType) child).getRawType()).isAssignableFrom(List.class))) {
                             list.add(addList(parameterizedType.getActualTypeArguments()[0], (JSONArray) element, o, generics));
                         } else {
-                            list.add(getDeserializeField((Class<?>) child, o, element, generics));
+//                            list.add(getDeserializeField((Class<?>) child, o, element, generics));
+                            Type c=((ParameterizedType) child).getRawType();
+//                            ((ParameterizedType) child).getActualTypeArguments()[0];
+//                            list.add(getDeserializeField((Class<?>) c, child, element, generics));
+                            list.add(getDeserializeField((Class<?>) c, child, element, new ParameterizedGenerics(child,generics)));
+                            System.out.printf("%s\t\n",(Class<?>) ((ParameterizedType) child).getRawType());
                         }
                     } else {
                         list.add(getDeserializeField((Class<?>) child, o, element, generics));
@@ -169,10 +174,14 @@ public class SerializerUtils {
                     } else if (__myType instanceof ParameterizedType) {
                         return new Mapper<>(new ReflectiveSerializer<>(type, new ParameterizedGenerics(__myType, generics))).deserialize((JSONObject) element, type);
                     } else {
-                        return new Mapper<>(new ReflectiveSerializer<>(type, null)).deserialize((JSONObject) element, type);
+                        return new Mapper<>(new ReflectiveSerializer<>(type, generics)).deserialize((JSONObject) element, type);
                     }
+                }else if(o instanceof TypeVariable<?> __myType){
+//                    return new Mapper<>(new ReflectiveSerializer<>(type, new ParameterizedGenerics(o, generics))).deserialize((JSONObject) element, type);
+                        throw new RuntimeException("SHOULD NOT HAPPEN IG");
+//                    System.out.println(o);
                 }
-                return new Mapper<>(new ReflectiveSerializer<>(type,null)).deserialize((JSONObject) element, type);
+                return new Mapper<>(new ReflectiveSerializer<>(type, null)).deserialize((JSONObject) element, type);
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {

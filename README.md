@@ -9,4 +9,4 @@
 3. Check for non-public variables
 4. Add caching for JSONArray and JSONObject
 5. Add support for private fields
-6. Add component based combinators
+6. Add support for Combinator based serialization
