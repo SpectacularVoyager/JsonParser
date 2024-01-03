@@ -1,10 +1,13 @@
 # A Reflection based JSON Parser for Java
 
-----
+
 
 ### A Reflection based JSON Parser and serializer In Java to manage JSON DAOs
-## USAGE
-### Initialize Mapper for your class
+
+----
+
+### USAGE
+#### Initialize Mapper for your class
 
 ```java
     //Create a generics object with for Class1<Integer>
@@ -16,7 +19,7 @@
     //Create a mapper
     Mapper<Class2> mapper=new Mapper<>(serializer);
 ```
-### To Parse an example json object 
+#### To Parse an example json object 
 
 
 ```json
@@ -32,12 +35,12 @@
     //Print a (It should be 10)
     System.out.println(obj.a);
 ```
-## Features
+### Features
 * Works with any class
 * Fully supports generic classes
 * Easy to change default behaviour using Custom Serializers
 
-## Upcoming
+### Upcoming
 - [ ] Support for Multi-dimensional Arrays
 - [ ] Support for finding private/protected fields
 - [ ] Caching JSONArray and JSONObjects
