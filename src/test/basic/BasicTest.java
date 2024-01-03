@@ -7,6 +7,7 @@ import main.JSONParser.ParameterizedGenerics;
 import main.JSONParser.Parser.Parser;
 import main.ParserCombinators.Serializer.ReflectiveSerializer;
 import main.ParserCombinators.Serializer.Serializer;
+import test.Test.Class1;
 import test.Test.Class2;
 import test.Test.Test1;
 import org.junit.jupiter.api.Assertions;
@@ -64,5 +65,13 @@ public class BasicTest {
         Mapper<Test1<Integer>> mapper = new Mapper<>(new ReflectiveSerializer<>(Test1.class, generics));
         Test1<Integer> obj = mapper.deserialize(object, Test1.class);
         Assertions.assertEquals(s, mapper.serialize(obj).serialize());
+    }
+    @Test
+    public void checkQOLFeactures() throws IllegalAccessException {
+        JSONObject object = (JSONObject) Parser.parse("{\"x\":{\"a\":11,\"b\":6},\"b\":[[[12,13,14],[1,2]],[[3]]],\"c3\":{\"b\":10,\"c\":30}}");
+        Mapper<Class1<Integer>> mapper=new Mapper<>(Class1.class,Integer.class);
+
+        Class1<Integer> obj=mapper.deserialize(object,Class1.class);
+
     }
 }
